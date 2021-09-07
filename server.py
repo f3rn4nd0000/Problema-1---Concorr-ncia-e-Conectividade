@@ -22,7 +22,7 @@ def echo_server(port):
     print ("Waiting to receive message from client")
     data, address = sock.recvfrom(data_payload)
     print ("received %s bytes from %s" % (len(data), address))
-    device_data = data.decode()
+    device_data = data.decode() # decodifica a mensagem recebida como JSON
     print(% device_data)
     # print ("Data: %s" %data)  
     # if data:
