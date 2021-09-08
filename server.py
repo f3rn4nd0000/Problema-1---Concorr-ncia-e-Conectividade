@@ -7,7 +7,7 @@ import sys
 import argparse
 import json
 host = 'localhost'
-data_payload = 2048
+data_payload = 16384
 
 def echo_server(port):
   """ A simple echo server """
@@ -25,7 +25,7 @@ def echo_server(port):
 
     device_data = data.decode() # decodifica a mensagem recebida como JSON
 
-    print(% device_data)
+    print(device_data)
     # print ("Data: %s" %data)  
     # if data:
     #   sent = sock.sendto(data, address)
