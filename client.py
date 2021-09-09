@@ -5,13 +5,38 @@ import socket
 import sys
 import argparse
 import json
+from faker import Faker
 host = 'localhost'
 data_payload = 16384
 
-# data_set = {"key1": [1, 2, 3], "key2": [4, 5, 6]}
-# json_dump = json.dumps(data_set)
-# jsonResult = {"first":"You're", "second":"Awsome!"}
-# jsonResult = json.dumps(jsonResult)
+# A classe abaixo faz parte da simulação
+class Patient:
+  #Construtor
+  def __init__(self):
+    fake = Faker()
+    self.first_name = fake.first_name()
+    self.last_name = fake.last_name()
+    self.oxigenacao = random.uniform(90,100)
+    self.name = []
+    self.name.append(self.first_name)
+    self.name.append(self.last_name)
+    # self.name = ''.join(1)
+
+  #cria um json para ser enviado
+  def get_json(self):
+    json_content = {
+      'nome': self.name,
+      'oxigenacao': self.oxigenacao
+    }
+    return json.dumps(json_content)
+
+  #atualiza o JSON com valores de oxigenação diferentes
+  def update_json(self):
+    self.oxigenacao = random.uniform(90,100)
+    json_content = {
+      'oxigenacao': self.oxigenacao
+    }
+    return json.dumps(json_content)
 
 def echo_client(port):
   """ A simple echo client """
@@ -22,18 +47,11 @@ def echo_client(port):
   message = 'This is the message. It will be repeated.'
 
   try:
-    # Send data
-    # data_set = {"key1": [1, 2, 3], "key2": [4, 5, 6]}
-    # json_dump = json.dumps(data_set)
-    with open("MOCK_DATA.json") as jsonFile:
+    with open("client-data.json",'a') as jsonFile:
       data = json.load(jsonFile)
-      # data_to_send = json.loads(data)
-      # data_to_send = ''.join(data)
-      user_encode_data = json.dumps(data, indent=2).encode('utf-8')
+      user_encode_data = json.dumps(data, indent=2).encode('utf-8') # codifica o dictionary data em bytes para ser enviado
       jsonFile.close()
     print(type(data))
-    # message = "Test message. This will be echoed"
-    # print(type(jsonObject))  
     print ("Sending MOCK_DATA.json")
     sent = sock.sendto(user_encode_data, server_address)
     # print(data)

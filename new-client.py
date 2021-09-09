@@ -65,14 +65,16 @@ def echo_client(port):
   try:
     # with open("client-data.json",'a') as jsonFile:
       # data = json.load(jsonFile)
-    data = input_data(1).toJSON()
+    patient = Patient()
+    data = patient.get_json()
     print(data)
   # user_encode_data = json.dumps(data, indent=2).encode('utf-8') # codifica o dictionary data em bytes para ser enviado
     # jsonFile.close()
     # print(type(data))
     print ("Sending encoded data")
     while True:
-      sent = sock.sendto(data.encode(), server_address)
+      patient.update_json()
+      sent = sock.sendto(patient.toJSON().encode(), server_address)
   finally:
     print ("Closing connection to the server")
     sock.close()
