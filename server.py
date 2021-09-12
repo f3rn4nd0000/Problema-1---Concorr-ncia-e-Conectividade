@@ -18,14 +18,22 @@ def echo_server(port):
   print ("Starting up echo server on %s port %s" % server_address)
   sock.bind(server_address)
   
+  # data = {}
+  # data['key'] = 'value'
+  # json_data = json.dumps(data)
+
   while True:
     print ("Waiting to receive message from client")
-    data, address = sock.recvfrom(data_payload)
+    data, address = sock.recvfrom(data_payload) #recebe os dados processados pelo socket UDP
     print ("received %s bytes from %s" % (len(data), address))
 
     device_data = data.decode() # decodifica a mensagem recebida como JSON
 
     print(device_data)
+    print("Registrando os dados em um banco para comunicação com servidor HTTP...")
+    with open("./express/BANCO_QUATRO.json",'w') as file:
+      json.dump(device_data,file)
+    # separators=(',', ': ') isso aqui vai no json dump
     # print ("Data: %s" %data)  
     # if data:
     #   sent = sock.sendto(data, address)

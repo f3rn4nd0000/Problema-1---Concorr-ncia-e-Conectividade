@@ -6,6 +6,7 @@ import sys
 import argparse
 import json
 import random
+import time
 from faker import Faker
 host = 'localhost'
 data_payload = 16384
@@ -25,7 +26,7 @@ class Patient:
 
   def toJSON(self):
       return json.dumps(self, default=lambda o: o.__dict__, 
-          sort_keys=True, indent=4)
+          sort_keys=True)
 
   #cria um json para ser enviado
   def get_json(self):
@@ -59,9 +60,9 @@ def echo_client(port):
   # Create a UDP socket
   sock = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
   server_address = (host, port)
-  print ("Connecting to %s port %s" % server_address)
+  print ("Conectando-se a %s porta %s" % server_address)
   message = 'This is the message. It will be repeated.'
-
+  # data = {}
   try:
     # with open("client-data.json",'a') as jsonFile:
       # data = json.load(jsonFile)
@@ -71,10 +72,11 @@ def echo_client(port):
   # user_encode_data = json.dumps(data, indent=2).encode('utf-8') # codifica o dictionary data em bytes para ser enviado
     # jsonFile.close()
     # print(type(data))
-    print ("Sending encoded data")
+    print ("Enviando dados em forma de bytes")
     while True:
       patient.update_json()
       sent = sock.sendto(patient.toJSON().encode(), server_address)
+      time.sleep(2)
   finally:
     print ("Closing connection to the server")
     sock.close()
