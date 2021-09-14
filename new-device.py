@@ -8,7 +8,8 @@ import json
 import random
 import time
 from faker import Faker
-host = 'localhost'
+# from http.client import HTTPConnection
+host = '0.0.0.0'
 data_payload = 16384
 
 # A classe abaixo faz parte da simulação
@@ -36,14 +37,22 @@ class Patient:
     }
     return json.dumps(json_content)
 
+  def get_name(self):
+    json_content = {
+      'nome': self.name,
+    }
+    return json.dumps(json_content)  
+
   #atualiza o JSON com valores de oxigenação diferentes
   def update_json(self):
     self.oxigenacao = random.uniform(90,100)
     json_content = {
       'oxigenacao': self.oxigenacao
     }
-    return self.oxigenacao
+    return json.dumps(json_content)
 
+  def get_oxigenacao(self):
+    return json.dumps(self.oxigenacao)
 
 def input_data(x):
   for i in range(0,x):
@@ -66,15 +75,22 @@ def echo_client(port):
     # with open("client-data.json",'a') as jsonFile:
       # data = json.load(jsonFile)
     patient = Patient()
-    data = patient.get_json()
-    print(data)
+    print(type(patient.get_json))
+    print(type(patient.update_json))
+    data_name = patient.get_name()
+    # print("data=%s" % data)
   # user_encode_data = json.dumps(data, indent=2).encode('utf-8') # codifica o dictionary data em bytes para ser enviado
     # jsonFile.close()
     # print(type(data))
     print ("Enviando dados em forma de bytes")
+    # data_oxigenacao = patient.get_oxigenacao
+    sent = sock.sendto(data_name.encode(), server_address)
     while True:
-      patient.update_json()
-      sent = sock.sendto(patient.toJSON().encode(), server_address)
+      data_update = patient.update_json()
+      sent = sock.sendto(data_update.encode(), server_address)
+      # sent2 = sock.sendto(data_update.encode(), server_address)
+      # data = patient.update_json()
+      # # sent = sock.sendto(data.encode(), server_address)
       time.sleep(2)
   finally:
     print ("Closing connection to the server")
