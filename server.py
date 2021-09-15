@@ -57,6 +57,11 @@ def echo_server(port):
     print("put status code = ")
     print(put.status_code)
 
+    # url = 'http://127.0.0.1:3000/pacientes'
+    # data = device_data
+    # post = requests.post(url, verify=False, json=data)
+    # print(post.status_code)
+
     # body = {'minha': device_data}
     # req = urllib.request.Request('http://127.0.0.1:3000/pacientes', headers={'User-Agent': 'Mozilla/5.0'})
     # req.add_header('Content type','application/json; charset=utf-8')

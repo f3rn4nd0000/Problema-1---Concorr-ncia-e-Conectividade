@@ -38,14 +38,27 @@ def addOne():
 
 @app.route('/pacientes', methods=['PUT'])
 def editAll():
+    # patient_stored = Patient() # aqui serao carregados os dados contidos no array já armazenado no server até agora
+    
     new_patient = request.get_json()
     new_patient_data = json.loads(new_patient)
+    
+    tmp_buffer = []
+    tmp_buffer.append(new_patient_data['nome'])
+    tmp_buffer.append(new_patient_data['oxigenacao'])
+    print("asidoasidoa")
+    print(tmp_buffer)
+    # patient_stored.first_name = new_patient_data
+    for patient in patients:
+      if(patient['nome'] == tmp_buffer[0]):
+        patient['oxigenacao'] = tmp_buffer[1]
+      print ("xupa meu pau")
+      print(patient)
+    #   if (patie)
     # for patient in patients
-    # if (new_patient)
-    for patient in patients
-      if patient
-        patients[i] = new_patient    
-    ps = request.get_json()
+    #   if patient
+    #     patients[i] = new_patient    
+    # ps = request.get_json()
     return jsonify({'patients' : patients})
 
 if __name__ == '__main__':
