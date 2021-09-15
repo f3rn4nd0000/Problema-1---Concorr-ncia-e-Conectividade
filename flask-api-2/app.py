@@ -4,6 +4,17 @@ from flask import jsonify
 from flask import request    
 app = Flask(__name__)
 
+class Patient:
+  #Construtor
+  def __init__(self):
+    self.first_name = first_name
+    self.last_name = last_name
+    self.oxigenacao = oxigenacao
+    self.name = name
+    # self.name.append(self.first_name)
+    # self.name.append(self.last_name)
+    self.name = ''.join((self.first_name," ",self.last_name))
+
 patients = [] # array que vai armazenar os pacientes e seus dados
 
 @app.route('/', methods=['GET'])
@@ -20,15 +31,19 @@ def returnAll():
 @app.route('/pacientes', methods=['POST'])
 def addOne():
     new_patient = request.get_json()
-    patients.append(new_patient)
+    new_patient_data = json.loads(new_patient)
+    patients.append(new_patient_data)
     # patients.insert(new_patient)
     return jsonify({'patients' : patients}) 
 
 @app.route('/pacientes', methods=['PUT'])
-def editOne(name):
+def editAll():
     new_patient = request.get_json()
-    for i,p in enumerate(quarks):
-      if p['name'] == name:
+    new_patient_data = json.loads(new_patient)
+    # for patient in patients
+    # if (new_patient)
+    for patient in patients
+      if patient
         patients[i] = new_patient    
     ps = request.get_json()
     return jsonify({'patients' : patients})
