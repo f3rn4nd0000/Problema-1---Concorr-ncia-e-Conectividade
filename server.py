@@ -30,6 +30,14 @@ def echo_server(port):
 
   print("Servidor incializando\nIniciando modelagem de dados..." )
 
+  data, address = sock.recvfrom(data_payload)
+  device_data = data.decode()
+  
+  url = 'http://127.0.0.1:3000/pacientes'
+  data = device_data
+  post = requests.post(url, verify=False, json=data)
+  print(post.status_code)
+
   while True:
     print ("Waiting to receive message from client")
     data, address = sock.recvfrom(data_payload) #recebe os dados processados pelo socket UDP
@@ -42,11 +50,12 @@ def echo_server(port):
     print(type(device_data))
     # params = urllib.parse.urlencode({'oxigenacao': device_data},doseq=True)
     # headers = {"Content-type": "application/x-www-form-urlencoded", "Accept": "text/plain"}
-    
+
     url = 'http://127.0.0.1:3000/pacientes'
     data = device_data
-    r = requests.post(url, verify=False, json=data)
-    print(r.status_code)
+    put = requests.put(url, verify=False, json=data)
+    print("put status code = ")
+    print(put.status_code)
 
     # body = {'minha': device_data}
     # req = urllib.request.Request('http://127.0.0.1:3000/pacientes', headers={'User-Agent': 'Mozilla/5.0'})

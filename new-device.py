@@ -49,6 +49,7 @@ class Patient:
     json_content = {
       'oxigenacao': self.oxigenacao
     }
+    # print(self.oxigenacao)
     return json.dumps(json_content)
 
   def get_oxigenacao(self):
@@ -75,19 +76,22 @@ def echo_client(port):
     # with open("client-data.json",'a') as jsonFile:
       # data = json.load(jsonFile)
     patient = Patient()
-    print(type(patient.get_json))
-    print(type(patient.update_json))
-    data_name = patient.get_name()
+    teste = input_data(1).get_json()
+    # print('teste=')
+    # print(teste)
+    # print(type(patient.get_json))
+    # print(type(patient.update_json))
+    # data_name = patient.get_name()
     # print("data=%s" % data)
   # user_encode_data = json.dumps(data, indent=2).encode('utf-8') # codifica o dictionary data em bytes para ser enviado
     # jsonFile.close()
     # print(type(data))
     print ("Enviando dados em forma de bytes")
     # data_oxigenacao = patient.get_oxigenacao
-    sent = sock.sendto(data_name.encode(), server_address)
     while True:
       data_update = patient.update_json()
-      sent = sock.sendto(data_update.encode(), server_address)
+      sent = sock.sendto(patient.get_json().encode(), server_address)
+      # sent = sock.sendto(patient.toJSON().encode(), server_address)
       # sent2 = sock.sendto(data_update.encode(), server_address)
       # data = patient.update_json()
       # # sent = sock.sendto(data.encode(), server_address)

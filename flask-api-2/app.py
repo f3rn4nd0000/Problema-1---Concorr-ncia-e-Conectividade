@@ -24,7 +24,7 @@ def addOne():
     # patients.insert(new_patient)
     return jsonify({'patients' : patients}) 
 
-@app.route('/quarks/<string:name>', methods=['PUT'])
+@app.route('/pacientes', methods=['PUT'])
 def editOne(name):
     new_patient = request.get_json()
     for i,p in enumerate(quarks):
