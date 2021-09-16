@@ -46,14 +46,16 @@ def editAll():
     tmp_buffer = []
     tmp_buffer.append(new_patient_data['nome'])
     tmp_buffer.append(new_patient_data['oxigenacao'])
-    print("asidoasidoa")
+    # print("asidoasidoa")
     print(tmp_buffer)
     # patient_stored.first_name = new_patient_data
     for patient in patients:
+      # se o nome do paciente já estiver registrado atualiza seu valor de oxigenação
       if(patient['nome'] == tmp_buffer[0]):
         patient['oxigenacao'] = tmp_buffer[1]
-      print ("xupa meu pau")
+      print ("dentro do put req mas fora do if")
       print(patient)
+      print(patients)
     #   if (patie)
     # for patient in patients
     #   if patient

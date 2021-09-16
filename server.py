@@ -8,21 +8,36 @@ import argparse
 import json
 from multiprocessing import Pool
 import os
-import abc
 from http.client import HTTPConnection
+import threading
+import requests
 # import urllib
 # import urllib3
-import urllib.request
-from flask import request
-import requests
+# import urllib.request
+# from flask import request
 # from httplib2 import HTTPConnectionWithTimeout
 host = 'localhost'
 data_payload = 16384
+
+# def send_to_flask():
+
+# def receive_from_socket():    
+#   data, address = sock.recvfrom(data_payload) #recebe os dados processados pelo socket UDP
+#   device_data = data.decode()
+#   print ("received %s bytes from %s" % (len(data), address))
+#   data_dict1 = json.loads(device_data1)
+#   return device_data
+
+# def send_to_flask(device_data):
+
+
 
 def echo_server(port):
   """ A simple echo server """
   # Create a UDP socket
   sock = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
+  sock.setblocking(0)
+  # sock.settimeout(0.5)
   # Bind the socket to the port
   server_address = (host, port)
   print ("Starting up echo server on %s port %s" % server_address)
@@ -30,32 +45,67 @@ def echo_server(port):
 
   print("Servidor incializando\nIniciando modelagem de dados..." )
 
-  data, address = sock.recvfrom(data_payload)
-  device_data = data.decode()
-  
-  url = 'http://127.0.0.1:3000/pacientes'
-  data = device_data
-  post = requests.post(url, verify=False, json=data)
-  print(post.status_code)
+  # data, address = sock.recvfrom(data_payload)
+  # device_data1 = data.decode()
+  # print ("first response, received %s bytes from %s" % (len(data), address))
+  # url = 'http://127.0.0.1:3000/pacientes'
+  # # data = device_data1
+  # post = requests.post(url, verify=False, json=device_data1)
+  # print(post.status_code)
 
   while True:
     print ("Waiting to receive message from client")
-    data, address = sock.recvfrom(data_payload) #recebe os dados processados pelo socket UDP
+    data, address = sock.recvfrom(data_payload)
+    device_data1 = data.decode()
     print ("received %s bytes from %s" % (len(data), address))
-    device_data = data.decode() # decodifica a mensagem recebida como JSON
-    print(device_data)
+    
+    data, address = sock.recvfrom(data_payload) #recebe os dados processados pelo socket UDP
+    device_data2 = data.decode()
+    print ("received %s bytes from %s" % (len(data), address))
+    
+    data_dict1 = json.loads(device_data1)
+    data_dict2 = json.loads(device_data2)
+    # palavra_1 = []
+    # palavra_1.append(device_data1)
+    # json.loa
+    # palavra_2 = []
+    # palavra_2.append(device_data2)
+    # device_data = data.decode() # decodifica a mensagem recebida como JSON
+    print("device_data1", data_dict1['nome'])
+    print("device_data2", data_dict2['nome'])
+    print(type(data_dict1['nome']))
     # conn = HTTPConnection("localhost", 3000)
     # conn.putheader("content-length","512")
     # conn.endheaders()
-    print(type(device_data))
+    # print(type(device_data))
     # params = urllib.parse.urlencode({'oxigenacao': device_data},doseq=True)
     # headers = {"Content-type": "application/x-www-form-urlencoded", "Accept": "text/plain"}
 
+    # data, address = sock.recvfrom(data_payload)
+    # device_data2 = data.decode()
     url = 'http://127.0.0.1:3000/pacientes'
-    data = device_data
-    put = requests.put(url, verify=False, json=data)
-    print("put status code = ")
-    print(put.status_code)
+    
+    # data = device_data
+      # post = requests.post(url, verify=False, json=device_data2)
+      # print("post status code = ",post.status_code)
+      
+    # post = requests.post(url, verify=False, json=device_data1)
+    # print("post status code = ",post.status_code)
+
+    if(data_dict2['nome'] != data_dict1['nome']):
+      print('nao iguais')
+      post = requests.post(url, verify=False, json=device_data2)
+      print("post status code = ")
+      print(post.status_code)
+    elif(data_dict2['nome'] == data_dict1['nome']):
+      print('iguais')
+      put = requests.put(url, verify=False, json=device_data1) #tanto faz json=device_data1 ou 2 pois é o mesmo pacote
+      print("put status code = ",put.status_code)
+    # post = requests.post(url, verify=False, json=device_data)
+    # print(post.status_code)
+
+    # url = 'http://127.0.0.1:3000/pacientes'
+    # data = device_data
 
     # url = 'http://127.0.0.1:3000/pacientes'
     # data = device_data
@@ -118,5 +168,6 @@ if __name__ == '__main__':
   parser.add_argument('--port', action="store", dest="port", type=int, required=True)
   given_args = parser.parse_args()
   port = given_args.port
-  echo_server(port)
-  
+  # echo_server(port)
+  threaded_server = threading.Thread(target=echo_server)
+  threaded_server.start()

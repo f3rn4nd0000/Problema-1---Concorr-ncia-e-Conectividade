@@ -76,7 +76,7 @@ def echo_client(port):
     # with open("client-data.json",'a') as jsonFile:
       # data = json.load(jsonFile)
     patient = Patient()
-    teste = input_data(1).get_json()
+    # teste = input_data(1).get_json()
     # print('teste=')
     # print(teste)
     # print(type(patient.get_json))
@@ -89,13 +89,14 @@ def echo_client(port):
     print ("Enviando dados em forma de bytes")
     # data_oxigenacao = patient.get_oxigenacao
     while True:
-      data_update = patient.update_json()
+      patient.update_json()
       sent = sock.sendto(patient.get_json().encode(), server_address)
+      print(patient.get_json())
       # sent = sock.sendto(patient.toJSON().encode(), server_address)
       # sent2 = sock.sendto(data_update.encode(), server_address)
       # data = patient.update_json()
       # # sent = sock.sendto(data.encode(), server_address)
-      time.sleep(2)
+      time.sleep(3)
   finally:
     print ("Closing connection to the server")
     sock.close()
