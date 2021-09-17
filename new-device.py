@@ -21,6 +21,7 @@ class Patient:
     self.last_name = fake.last_name()
     self.oxigenacao = random.uniform(90,100)
     self.name = ""
+    self.gravidade = false
     # self.name.append(self.first_name)
     # self.name.append(self.last_name)
     self.name = ''.join((self.first_name," ",self.last_name))
