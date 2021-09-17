@@ -54,7 +54,7 @@ def echo_client(port):
       # sent2 = sock.sendto(data_update.encode(), server_address)
       # data = patient.update_json()
       # # sent = sock.sendto(data.encode(), server_address)
-      time.sleep(3)
+      time.sleep(1)
   finally:
     print ("Closing connection to the server")
     sock.close()
